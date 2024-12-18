@@ -1,0 +1,33 @@
+{
+  "name": "yuka",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev:watch": "nodemon"
+  },
+  "watch": [
+    "src"
+  ],
+  "ext": "ts",
+  "ignore": [
+    "src/**/*.spec.ts"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register src/app.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0"
+  }
+}
