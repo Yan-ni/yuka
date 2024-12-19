@@ -1,22 +1,44 @@
 import { Request, Response } from "express";
-import * as localDB from '../models/products';
-import * as OFF from '../OFF';
+import * as localDB from "../models/products";
+import * as OFF from "../OFF";
 
 export default {
   products: {
     get: async (req: Request, res: Response): Promise<void> => {
-      const productName = req.query.name;
+      const query = req.query.query;
+      const queryType = req.query.type;
 
-      if (!productName || typeof productName !== "string") {
-        res
-          .status(400)
-          .json({ error: "Product name is required and must be a string" });
+      if (!query || typeof query !== "string") {
+        res.status(400).json({ error: "A query is required!" });
+        return;
+      }
+
+      if (
+        !queryType ||
+        typeof queryType !== "string" ||
+        !["name", "code"].includes(queryType)
+      ) {
+        res.status(400).json({
+          error: "A query type is required and must be 'name' or 'code'",
+        });
         return;
       }
 
       try {
-        console.log(`searching for product name: ${productName}`);
-        let productCategory = await localDB.getProductCategoryByName(productName) || await OFF.getProductCategoryByName(productName);
+        console.log(`searching for product ${queryType}: ${query}`);
+        let productCategory;
+        
+        if (queryType === "name") {
+          productCategory =
+            (await localDB.getProductCategoryByName(query)) ||
+            (await OFF.getProductCategoryByName(query));
+        } else {
+          productCategory =
+            (await localDB.getProductCategoryByCode(query)) ||
+            (await OFF.getProductCategoryByCode(query));
+        }
+
+        console.log(`product category is : ${productCategory}`);
 
         if (!productCategory) {
           res.sendStatus(404);
