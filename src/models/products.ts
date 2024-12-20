@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import { client } from '../database';
 
 const yukaDB = client.db('yuka');
